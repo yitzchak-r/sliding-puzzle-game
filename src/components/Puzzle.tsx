@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { shuffleTiles, isMoveValid } from "../utils/puzzleUtils";
 
 const GRID_SIZE = 3;
 
@@ -17,17 +18,9 @@ const Puzzle: React.FC = () => {
     setTiles(shuffledTiles);
   };
 
-  const shuffleTiles = (tiles: number[]): number[] => {
-    for (let i = tiles.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
-    }
-    return tiles;
-  };
-
   const handleTileClick = (index: number) => {
     const emptyIndex = tiles.indexOf(0);
-    if (isMoveValid(index, emptyIndex)) {
+    if (isMoveValid(index, emptyIndex, GRID_SIZE)) {
       const newTiles = [...tiles];
       [newTiles[index], newTiles[emptyIndex]] = [
         newTiles[emptyIndex],
@@ -37,17 +30,6 @@ const Puzzle: React.FC = () => {
     }
   };
 
-  const isMoveValid = (tileIndex: number, emptyIndex: number): boolean => {
-    const tileRow = Math.floor(tileIndex / GRID_SIZE);
-    const tileCol = tileIndex % GRID_SIZE;
-    const emptyRow = Math.floor(emptyIndex / GRID_SIZE);
-    const emptyCol = emptyIndex % GRID_SIZE;
-
-    return (
-      (Math.abs(tileRow - emptyRow) === 1 && tileCol === emptyCol) ||
-      (Math.abs(tileCol - emptyCol) === 1 && tileRow === emptyRow)
-    );
-  };
   return (
     <PuzzleContainer>
       {tiles.map((tile, index) => (
@@ -64,9 +46,6 @@ const Puzzle: React.FC = () => {
   );
 };
 
-export default Puzzle;
-
-// עיצוב הקומפוננטות בעזרת styled-components
 const PuzzleContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(${GRID_SIZE}, 100px);
@@ -101,3 +80,5 @@ const ResetButton = styled.button`
     background-color: #0056b3;
   }
 `;
+
+export default Puzzle;

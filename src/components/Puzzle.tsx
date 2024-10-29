@@ -65,3 +65,39 @@ const Puzzle: React.FC = () => {
 };
 
 export default Puzzle;
+
+// עיצוב הקומפוננטות בעזרת styled-components
+const PuzzleContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${GRID_SIZE}, 100px);
+  gap: 5px;
+`;
+
+const Tile = styled.div<{ isEmpty: boolean }>`
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: ${({ isEmpty }) => (isEmpty ? "transparent" : "black")};
+  background-color: ${({ isEmpty }) => (isEmpty ? "lightgray" : "#4CAF50")};
+  cursor: ${({ isEmpty }) => (isEmpty ? "default" : "pointer")};
+  border-radius: 4px;
+`;
+
+const ResetButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;

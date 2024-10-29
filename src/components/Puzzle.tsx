@@ -23,4 +23,24 @@ const Puzzle: React.FC = () => {
         }
         return tiles;
       };
-    
+
+  const handleTileClick = (index: number) => {
+    const emptyIndex = tiles.indexOf(0);
+    if (isMoveValid(index, emptyIndex)) {
+      const newTiles = [...tiles];
+      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
+      setTiles(newTiles);
+    }
+  };
+
+  const isMoveValid = (tileIndex: number, emptyIndex: number): boolean => {
+    const tileRow = Math.floor(tileIndex / GRID_SIZE);
+    const tileCol = tileIndex % GRID_SIZE;
+    const emptyRow = Math.floor(emptyIndex / GRID_SIZE);
+    const emptyCol = emptyIndex % GRID_SIZE;
+
+    return (
+      (Math.abs(tileRow - emptyRow) === 1 && tileCol === emptyCol) ||
+      (Math.abs(tileCol - emptyCol) === 1 && tileRow === emptyRow)
+    );
+  };
